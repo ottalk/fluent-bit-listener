@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fluent-bit-http-kafka
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fluent-bit-http-kafka
+  template:
+    metadata:
+      labels:
+        app: fluent-bit-http-kafka
+    spec:
+      containers:
+      - name: fluent-bit-http-kafka
+        image: ottalk/fluent-bit-http-kafka
+        imagePullPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fluent-bit-http-kafka
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    app: fluent-bit-http-kafka
+  ports:
+  - port: 8888
+    targetPort: 8888
+    nodePort: 30002
